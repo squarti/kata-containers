@@ -701,7 +701,7 @@ func (f *FilesystemShare) StartFileEventWatcher(ctx context.Context) error {
 		return nil
 	}
 	// Regex for the temp directory with timestamp that is used to handle the updates by K8s
-	var re = regexp.MustCompile(`(?m)\s*[0-9]{4}_[0-9]{2}_[0-9]{2}_[0-9]{2}_[0-9]{2}_[0-9]{2}.[0-9]{10}$`)
+	var re = regexp.MustCompile(`(?m)\s*[0-9]{4}_[0-9]{2}_[0-9]{2}_[0-9]{2}_[0-9]{2}_[0-9]{2}.[0-9]+$`)
 
 	f.Logger().Debugf("StartFileEventWatcher: srcDstMap dump %v", f.srcDstMap)
 
