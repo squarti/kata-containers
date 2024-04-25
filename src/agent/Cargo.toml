@@ -72,7 +72,7 @@ clap = { version = "3.0.1", features = ["derive"] }
 
 
 # Image pull/decrypt
-image-rs = { git = "https://github.com/squarti/guest-components", rev = "ee1a292f9202c27c7cf35cfcce7eb56347c596ec", default-features = false, features = [
+image-rs = { git = "https://github.com/squarti/guest-components", rev = "713d6a4e8c8380832464a147b0ad17e42e95be1e", default-features = false, features = [
     "kata-cc-native-tls",
     "verity",
     "signature-simple-xrss",
