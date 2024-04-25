@@ -1963,7 +1963,7 @@ dependencies = [
 [[package]]
 name = "image-rs"
 version = "0.1.0"
-source = "git+https://github.com/confidential-containers/guest-components?rev=a151bca6d5cc1a47f2cd91437134ad8ec9c754fe#a151bca6d5cc1a47f2cd91437134ad8ec9c754fe"
+source = "git+https://github.com/squarti/guest-components?rev=ee1a292f9202c27c7cf35cfcce7eb56347c596ec#ee1a292f9202c27c7cf35cfcce7eb56347c596ec"
 dependencies = [
  "anyhow",
  "async-compression",
