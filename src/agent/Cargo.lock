@@ -314,7 +314,7 @@ checksum = "1505bd5d3d116872e7271a6d4e16d81d0c8570876c8de68093a09ac269d8aac0"
 [[package]]
 name = "attester"
 version = "0.1.0"
-source = "git+https://github.com/squarti/guest-components?rev=ca2f64678c642bf4786bbb3d7297eef6fe7861a0#ca2f64678c642bf4786bbb3d7297eef6fe7861a0"
+source = "git+https://github.com/squarti/guest-components?rev=6e6fbb8b93e952e031f9892c34dc2ef95c4efce7#6e6fbb8b93e952e031f9892c34dc2ef95c4efce7"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -986,7 +986,7 @@ checksum = "7a81dae078cea95a014a339291cec439d2f232ebe854a9d672b796c6afafa9b7"
 [[package]]
 name = "crypto"
 version = "0.1.0"
-source = "git+https://github.com/squarti/guest-components?rev=ca2f64678c642bf4786bbb3d7297eef6fe7861a0#ca2f64678c642bf4786bbb3d7297eef6fe7861a0"
+source = "git+https://github.com/squarti/guest-components?rev=6e6fbb8b93e952e031f9892c34dc2ef95c4efce7#6e6fbb8b93e952e031f9892c34dc2ef95c4efce7"
 dependencies = [
  "anyhow",
  "base64 0.21.7",
@@ -2082,7 +2082,7 @@ dependencies = [
  "httpdate",
  "itoa",
  "pin-project-lite",
- "socket2 0.4.10",
+ "socket2 0.5.5",
  "tokio",
  "tower-service",
  "tracing",
@@ -2184,7 +2184,7 @@ dependencies = [
 [[package]]
 name = "image-rs"
 version = "0.1.0"
-source = "git+https://github.com/squarti/guest-components?rev=ca2f64678c642bf4786bbb3d7297eef6fe7861a0#ca2f64678c642bf4786bbb3d7297eef6fe7861a0"
+source = "git+https://github.com/squarti/guest-components?rev=6e6fbb8b93e952e031f9892c34dc2ef95c4efce7#6e6fbb8b93e952e031f9892c34dc2ef95c4efce7"
 dependencies = [
  "anyhow",
  "async-compression",
@@ -2554,7 +2554,7 @@ dependencies = [
 [[package]]
 name = "kbc"
 version = "0.1.0"
-source = "git+https://github.com/squarti/guest-components?rev=ca2f64678c642bf4786bbb3d7297eef6fe7861a0#ca2f64678c642bf4786bbb3d7297eef6fe7861a0"
+source = "git+https://github.com/squarti/guest-components?rev=6e6fbb8b93e952e031f9892c34dc2ef95c4efce7#6e6fbb8b93e952e031f9892c34dc2ef95c4efce7"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -2583,7 +2583,7 @@ dependencies = [
 [[package]]
 name = "kbs_protocol"
 version = "0.1.0"
-source = "git+https://github.com/squarti/guest-components?rev=ca2f64678c642bf4786bbb3d7297eef6fe7861a0#ca2f64678c642bf4786bbb3d7297eef6fe7861a0"
+source = "git+https://github.com/squarti/guest-components?rev=6e6fbb8b93e952e031f9892c34dc2ef95c4efce7#6e6fbb8b93e952e031f9892c34dc2ef95c4efce7"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -3169,7 +3169,7 @@ dependencies = [
 [[package]]
 name = "ocicrypt-rs"
 version = "0.1.0"
-source = "git+https://github.com/squarti/guest-components?rev=ca2f64678c642bf4786bbb3d7297eef6fe7861a0#ca2f64678c642bf4786bbb3d7297eef6fe7861a0"
+source = "git+https://github.com/squarti/guest-components?rev=6e6fbb8b93e952e031f9892c34dc2ef95c4efce7#6e6fbb8b93e952e031f9892c34dc2ef95c4efce7"
 dependencies = [
  "aes",
  "anyhow",
@@ -4122,7 +4122,7 @@ dependencies = [
 [[package]]
 name = "resource_uri"
 version = "0.1.0"
-source = "git+https://github.com/squarti/guest-components?rev=ca2f64678c642bf4786bbb3d7297eef6fe7861a0#ca2f64678c642bf4786bbb3d7297eef6fe7861a0"
+source = "git+https://github.com/squarti/guest-components?rev=6e6fbb8b93e952e031f9892c34dc2ef95c4efce7#6e6fbb8b93e952e031f9892c34dc2ef95c4efce7"
 dependencies = [
  "anyhow",
  "serde",
