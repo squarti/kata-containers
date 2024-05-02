@@ -200,7 +200,7 @@ externals:
   attestation-agent:
     description: "Provide attested key unwrapping for image decryption"
     url: "https://github.com/squarti/guest-components/"
-    branch: "main"
+    branch: "ssq-fork"
 
   cni-plugins:
     description: "CNI network plugins"
