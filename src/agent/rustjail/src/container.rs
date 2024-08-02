@@ -1257,7 +1257,13 @@ impl BaseContainer for LinuxContainer {
         mount::umount2(
             spec.root.as_ref().unwrap().path.as_str(),
             MntFlags::MNT_DETACH,
-        )?;
+        ).or_else(|e| {
+            if e.ne(&nix::Error::EINVAL) {
+                return Err(anyhow!(e));
+            }
+            warn!(self.logger, "rootfs not mounted");
+            Ok(())
+        })?;
         fs::remove_dir_all(&self.root)?;
 
         let cgm = self.cgroup_manager.as_mut();
