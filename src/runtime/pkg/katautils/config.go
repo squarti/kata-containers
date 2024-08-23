@@ -1336,11 +1336,13 @@ func newStratovirtHypervisorConfig(h hypervisor) (vc.HypervisorConfig, error) {
 }
 
 func newRemoteHypervisorConfig(h hypervisor) (vc.HypervisorConfig, error) {
+	machineType := h.machineType()
 
 	return vc.HypervisorConfig{
 		RemoteHypervisorSocket:  h.getRemoteHypervisorSocket(),
 		RemoteHypervisorTimeout: h.getRemoteHypervisorTimeout(),
 		DisableGuestSeLinux:     true, // The remote hypervisor has a different guest, so Guest SELinux config doesn't work
+		HypervisorMachineType:   machineType,
 		SharedFS:                config.NoSharedFS,
 
 		// No valid value so avoid to append block device to list in kata_agent.appendDevices
