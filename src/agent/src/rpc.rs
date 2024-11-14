@@ -296,7 +296,7 @@ impl AgentService {
         let p = if let Some(p) = oci.process() {
             #[cfg(feature = "guest-pull")]
             {
-                let new_p = image::get_process(&p, &oci, req.storages.clone())?;
+                let new_p = image::get_process(p, &oci, req.storages.clone())?;
                 Process::new(&sl(), &new_p, cid.as_str(), true, pipe_size, proc_io)?
             }
 

@@ -238,7 +238,7 @@ pub fn get_process(
         match oci.annotations() {
             Some(a) => {
                 if ImageService::is_sandbox(a) {
-                    return Ok(ImageService::get_pause_image_process()?);
+                    return ImageService::get_pause_image_process();
                 }
             }
             None => {}
