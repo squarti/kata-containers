@@ -25,7 +25,7 @@ use crate::AGENT_CONFIG;
 use kata_types::mount::KATA_VIRTUAL_VOLUME_IMAGE_GUEST_PULL;
 use protocols::agent::Storage;
 
-pub const KATA_IMAGE_WORK_DIR: &str = "/run/kata-containers/image/";
+pub const KATA_IMAGE_WORK_DIR: &str = "/i/";
 const CONFIG_JSON: &str = "config.json";
 const KATA_PAUSE_BUNDLE: &str = "/pause_bundle";
 
