@@ -53,9 +53,33 @@ impl StorageHandler for ImagePullHandler {
             .cid
             .clone()
             .ok_or_else(|| anyhow!("failed to get container id"))?;
-        let bundle_path = image::pull_image(image_name, &cid, &image_pull_volume.metadata).await?;
+        let pull_image_once = || async {
+            let bundle_path = image::pull_image(image_name, &cid, &image_pull_volume.metadata).await?;
 
-        new_device(bundle_path)
+            new_device(bundle_path)
+        };
+        let retries = 5;
+        let mut attempts = 1;
+        let mut timeout_ms = 2000;
+        loop {
+            match pull_image_once().await {
+                Ok(device) => {
+                    info!(ctx.logger, "pull image success on {} attempts", attempts);
+                    return Ok(device)
+                }
+                Err(e) => {
+                    if attempts == retries + 1 {
+                        return Err(e)
+                    }
+                    warn!(ctx.logger, "retry pull image after {} ms: failed to pull image at {}/{} attempts: {:?}", timeout_ms, attempts, retries + 1, e);
+                    tokio::time::sleep(tokio::time::Duration::from_millis(timeout_ms)).await;
+                    if timeout_ms < 32000 {
+                        timeout_ms = timeout_ms * 2;
+                    }
+                    attempts = attempts + 1
+                }
+            }
+        }
     }
 }
 
