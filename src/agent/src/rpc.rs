@@ -479,7 +479,15 @@ impl AgentService {
             // instead of "SIGTERM" to terminate it.
             let proc_status_file = format!("/proc/{}/status", p.pid);
             if p.init && sig == libc::SIGTERM && !is_signal_handled(&proc_status_file, sig as u32) {
-                sig = libc::SIGKILL;
+                warn!(
+                    sl(),
+                    "signal process: SIGTERM not replaced by SIGKILL";
+                    "container-id" => &cid,
+                    "exec-id" => &eid,
+                    "pid" => p.pid,
+                    "signal" => sig,
+                );
+                sig = libc::SIGTERM;
             }
 
             match p.signal(sig) {
