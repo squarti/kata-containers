@@ -479,7 +479,15 @@ impl AgentService {
             // instead of "SIGTERM" to terminate it.
             let proc_status_file = format!("/proc/{}/status", p.pid);
             if p.init && sig == libc::SIGTERM && !is_signal_handled(&proc_status_file, sig as u32) {
-                sig = libc::SIGKILL;
+                warn!(
+                    sl(),
+                    "signal process: SIGTERM not replaced by SIGKILL";
+                    "container-id" => &cid,
+                    "exec-id" => &eid,
+                    "pid" => p.pid,
+                    "signal" => sig,
+                );
+                sig = libc::SIGTERM;
             }
 
             match p.signal(sig) {
@@ -632,6 +640,51 @@ impl AgentService {
 
         Ok(resp)
     }
+
+   async fn do_read_container_termination_message(
+       &self,
+       req: protocols::agent::ReadContainerTerminationMessageRequest,
+   ) -> Result<protocols::agent::ReadContainerTerminationMessageResponse> {
+       let cid = req.container_id;
+
+       let mut sandbox = self.sandbox.lock().await;
+       let ctr = sandbox
+           .get_container(&cid)
+           .map_ttrpc_err(ttrpc::Code::INVALID_ARGUMENT, "invalid container id")?;
+
+       let mut resp = protocols::agent::ReadContainerTerminationMessageResponse::new();
+
+       let oci = match ctr.config.spec.as_ref() {
+           Some(s) => s,
+           None => return Err(anyhow!("unable to get termination message: spec not found")),
+       };
+
+       // Get the termination message path from OCI spec annotations
+       let annotations = oci.annotations()
+           .as_ref()
+           .ok_or_else(|| anyhow!("unable to get termination message: no annotations in spec"))?;
+       
+       let termination_msg_path = annotations
+           .get("io.kubernetes.container.terminationMessagePath")
+           .ok_or_else(|| anyhow!("io.kubernetes.container.terminationMessagePath annotation not found"))?;
+
+       let default_mnts = vec![];
+       for m in oci.mounts().as_ref().unwrap_or(&default_mnts) {
+           if m.destination().display().to_string() == *termination_msg_path {
+               match fs::read_to_string(m.source().as_ref().unwrap().display().to_string()) {
+                   Ok(v) => {
+                       resp.contents = v;
+                       return Ok(resp)
+                   }
+                   Err(e) => {
+                       return Err(anyhow!(format!("failed to read termination message file: {:?}", e)))
+                   }
+               }
+           }
+       }
+
+       Err(anyhow!("termination message mount not found"))
+   }
 
     async fn do_write_stream(
         &self,
@@ -951,6 +1004,16 @@ impl agent_ttrpc::AgentService for AgentService {
         }
 
         Ok(Empty::new())
+    }
+
+    async fn read_container_termination_message(
+        &self,
+        ctx: &TtrpcContext,
+        req: protocols::agent::ReadContainerTerminationMessageRequest,
+    ) -> ttrpc::Result<protocols::agent::ReadContainerTerminationMessageResponse> {
+        trace_rpc_call!(ctx, "read_container_termination_message", req);
+        is_allowed(&req).await?;
+        self.do_read_container_termination_message(req).await.map_ttrpc_err(same)
     }
 
     async fn write_stdin(

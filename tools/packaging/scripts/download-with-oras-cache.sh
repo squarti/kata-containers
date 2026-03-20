@@ -234,13 +234,28 @@ download_upstream() {
 		info "Verifying GPG signature..."
 		# Import GPG keys from keyserver (gperf maintainers)
 		local import_ok="no"
+		local keyservers=(
+			"hkps://keyserver.ubuntu.com"
+			"hkps://keys.openpgp.org"
+			"hkps://pgp.mit.edu"
+		)
 		for key in "${GPERF_GPG_KEYS[@]}"; do
-			if gpg --keyserver hkps://keyserver.ubuntu.com --recv-keys "${key}" >&2 2>/dev/null; then
-				import_ok="yes"
+			for keyserver in "${keyservers[@]}"; do
+				info "Attempting to import GPG key ${key} from ${keyserver}..."
+				if gpg --keyserver "${keyserver}" --recv-keys "${key}" >&2 2>&1; then
+					import_ok="yes"
+					info "Successfully imported GPG key ${key} from ${keyserver}"
+					break
+				else
+					warn "Failed to import GPG key ${key} from ${keyserver}"
+				fi
+			done
+			if [[ "${import_ok}" == "yes" ]]; then
+				break
 			fi
 		done
 		if [[ "${import_ok}" != "yes" ]]; then
-			die "Failed to import GPG keys for ${tarball_name}"
+			die "Failed to import GPG keys for ${tarball_name} from any keyserver"
 		fi
 		pushd "${output_dir}" > /dev/null
 		if gpg --verify "${tarball_name}.sig" "${tarball_name}" >&2 2>/dev/null; then
